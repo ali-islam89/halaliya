@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ハラール屋 カラーテーマ: グリーン×ゴールド */
+  --color-primary: #1B6B2E;
+  --color-primary-dark: #134d21;
+  --color-primary-light: #2a8a3d;
+  --color-accent: #C8961E;
+  --color-accent-dark: #a67b18;
+  --color-accent-light: #e0a820;
+
+  --color-background: #ffffff;
+  --color-foreground: #1a1a1a;
+  --color-muted: #f5f5f4;
+  --color-muted-foreground: #6b7280;
+  --color-border: #e5e7eb;
+  --color-card: #ffffff;
+
+  --font-sans: "Noto Sans JP", "Noto Sans", Inter, sans-serif;
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #1a1a1a;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: "Noto Sans JP", "Noto Sans", Inter, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* HALALバッジ */
+.halal-badge {
+  background-color: #1B6B2E;
+  color: white;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  padding: 2px 6px;
+  border-radius: 2px;
+}
+
+/* スクロールバーカスタマイズ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+::-webkit-scrollbar-thumb {
+  background: #1B6B2E;
+  border-radius: 3px;
+}
+
+/* フォーカスリング */
+:focus-visible {
+  outline: 2px solid #1B6B2E;
+  outline-offset: 2px;
+}
+
+/* ラインクランプ */
+.line-clamp-1 { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; }
+.line-clamp-2 { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
+.line-clamp-3 { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; }

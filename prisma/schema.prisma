@@ -1,0 +1,234 @@
+// Prisma schema for ハラール屋 (halaliya.com)
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum Role {
+  CUSTOMER
+  STAFF
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  PAYMENT_PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentMethod {
+  CREDIT
+  PAYPAY
+  COD
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  name      String?
+  role      Role     @default(CUSTOMER)
+  language  String   @default("ja")
+  points    Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  addresses     Address[]
+  orders        Order[]
+  wishlistItems WishlistItem[]
+  reviews       Review[]
+
+  @@map("users")
+}
+
+model Address {
+  id         String   @id @default(uuid())
+  userId     String
+  name       String
+  postalCode String
+  prefecture String
+  city       String
+  address1   String
+  address2   String?
+  phone      String
+  isDefault  Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  user   User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  orders Order[]
+
+  @@map("addresses")
+}
+
+model Category {
+  id       String     @id @default(uuid())
+  nameJa   String
+  nameTr   String?
+  nameEn   String?
+  slug     String     @unique
+  parentId String?
+  order    Int        @default(0)
+  imageUrl String?
+  createdAt DateTime  @default(now())
+
+  parent   Category?  @relation("CategoryChildren", fields: [parentId], references: [id])
+  children Category[] @relation("CategoryChildren")
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id         String   @id @default(uuid())
+  nameJa     String
+  nameTr     String?
+  nameEn     String?
+  slug       String   @unique
+  descJa     String?
+  descTr     String?
+  descEn     String?
+  price      Int
+  taxRate    Float    @default(0.10)
+  stock      Int      @default(0)
+  weight     Int?
+  isHalal    Boolean  @default(true)
+  isActive   Boolean  @default(true)
+  categoryId String?
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  category      Category?      @relation(fields: [categoryId], references: [id])
+  images        ProductImage[]
+  orderItems    OrderItem[]
+  wishlistItems WishlistItem[]
+  reviews       Review[]
+
+  @@map("products")
+}
+
+model ProductImage {
+  id        String   @id @default(uuid())
+  productId String
+  url       String
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("product_images")
+}
+
+model Order {
+  id             String        @id @default(uuid())
+  orderNumber    String        @unique
+  userId         String?
+  guestEmail     String?
+  guestName      String?
+  guestPhone     String?
+  addressId      String?
+  shippingName   String?
+  shippingPostal String?
+  shippingPref   String?
+  shippingCity   String?
+  shippingAddr1  String?
+  shippingAddr2  String?
+  shippingPhone  String?
+  status         OrderStatus   @default(PENDING)
+  paymentMethod  PaymentMethod
+  subtotal       Int
+  taxAmount      Int
+  shippingFee    Int           @default(0)
+  codFee         Int           @default(0)
+  total          Int
+  trackingNumber  String?
+  stripePaymentId String?
+  paypayOrderId  String?
+  note           String?
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+
+  user    User?      @relation(fields: [userId], references: [id])
+  address Address?   @relation(fields: [addressId], references: [id])
+  items   OrderItem[]
+
+  @@map("orders")
+}
+
+model OrderItem {
+  id          String   @id @default(uuid())
+  orderId     String
+  productId   String
+  productName String
+  price       Int
+  taxRate     Float
+  quantity    Int
+  createdAt   DateTime @default(now())
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model WishlistItem {
+  id        String   @id @default(uuid())
+  userId    String
+  productId String
+  createdAt DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("wishlist_items")
+}
+
+model Banner {
+  id       String   @id @default(uuid())
+  imageUrl String
+  linkUrl  String?
+  titleJa  String?
+  titleTr  String?
+  titleEn  String?
+  order    Int      @default(0)
+  isActive Boolean  @default(true)
+  createdAt DateTime @default(now())
+
+  @@map("banners")
+}
+
+model Review {
+  id         String   @id @default(uuid())
+  userId     String
+  productId  String
+  rating     Int
+  comment    String?
+  isApproved Boolean  @default(false)
+  createdAt  DateTime @default(now())
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("reviews")
+}
+
+model Settings {
+  id          String   @id @default("settings")
+  freeShipping Int     @default(10000)
+  shippingFee  Int     @default(800)
+  codFee       Int     @default(330)
+  updatedAt    DateTime @updatedAt
+
+  @@map("settings")
+}
