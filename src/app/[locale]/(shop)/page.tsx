@@ -2,6 +2,7 @@ import { getTranslations } from "next-intl/server";
 import { prisma } from "@/lib/prisma";
 import HeroBanner from "@/components/shop/HeroBanner";
 import ProductGrid from "@/components/shop/ProductGrid";
+import ProductCarousel from "@/components/shop/ProductCarousel";
 import PrayerTimesWidget from "@/components/shop/PrayerTimesWidget";
 import Link from "next/link";
 import type { Locale } from "@/types";
@@ -94,7 +95,7 @@ export default async function HomePage({
               </section>
             )}
 
-            {/* おすすめ商品 */}
+            {/* おすすめ商品カルーセル */}
             <section className="mb-10">
               <div className="flex items-center justify-between mb-4">
                 <h2 className="text-xl font-bold text-gray-900">{t("featuredProducts")}</h2>
@@ -103,15 +104,21 @@ export default async function HomePage({
                 </Link>
               </div>
               {featuredProducts.length > 0 ? (
-                <ProductGrid products={featuredProducts} locale={locale as Locale} />
+                <div className="px-4">
+                  <ProductCarousel
+                    products={featuredProducts}
+                    locale={locale as Locale}
+                    title={t("featuredProducts")}
+                  />
+                </div>
               ) : (
                 <div className="text-center py-12 text-gray-400 border border-dashed border-gray-200 rounded-xl">
-                  <p>商品を準備中です。もうしばらくお待ちください。</p>
+                  <p>{t("preparingProducts")}</p>
                 </div>
               )}
             </section>
 
-            {/* 新着商品 */}
+            {/* 新着商品カルーセル */}
             {newArrivals.length > 0 && (
               <section className="mb-10">
                 <div className="flex items-center justify-between mb-4">
@@ -120,7 +127,13 @@ export default async function HomePage({
                     {tc("viewAll")}
                   </Link>
                 </div>
-                <ProductGrid products={newArrivals} locale={locale as Locale} />
+                <div className="px-4">
+                  <ProductCarousel
+                    products={newArrivals}
+                    locale={locale as Locale}
+                    title={t("newArrivals")}
+                  />
+                </div>
               </section>
             )}
           </div>
@@ -134,9 +147,9 @@ export default async function HomePage({
               {/* ハラール認証バナー */}
               <div className="bg-[#C8961E]/10 border border-[#C8961E]/30 rounded-xl p-4">
                 <div className="text-[#C8961E] text-2xl mb-2">🌙</div>
-                <h3 className="font-semibold text-sm text-gray-900 mb-1">ハラール認証保証</h3>
+                <h3 className="font-semibold text-sm text-gray-900 mb-1">{t("halalGuaranteeTitle")}</h3>
                 <p className="text-xs text-gray-600">
-                  当店の全商品はハラール認証を取得した食品のみを取り扱っています。
+                  {t("halalGuaranteeText")}
                 </p>
               </div>
             </div>

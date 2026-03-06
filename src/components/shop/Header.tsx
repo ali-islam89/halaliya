@@ -16,6 +16,7 @@ interface HeaderProps {
 export default function Header({ locale, categories = [] }: HeaderProps) {
   const t = useTranslations("nav");
   const tc = useTranslations("common");
+  const tf = useTranslations("footer");
   const cartCount = useCart((s) => s.totalItems)();
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -26,7 +27,7 @@ export default function Header({ locale, categories = [] }: HeaderProps) {
     <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
       {/* Top bar */}
       <div className="bg-[#1B6B2E] text-white text-xs py-1 px-4 flex justify-between items-center">
-        <span>🕌 ハラール認証済み商品専門店</span>
+        <span>🕌 {tc("siteTagline")}</span>
         <div className="flex items-center gap-3">
           <Globe className="h-3 w-3" />
           {otherLocales.map((l) => (

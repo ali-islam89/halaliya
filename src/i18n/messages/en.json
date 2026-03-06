@@ -1,6 +1,7 @@
 {
   "common": {
     "siteName": "Halaliya",
+    "siteTagline": "Halal Certified Products Store",
     "siteDescription": "Halal-certified food and goods for Muslims in Japan",
     "halal": "Halal",
     "halalCertified": "Halal Certified",
@@ -65,6 +66,9 @@
   },
   "footer": {
     "halalStatement": "We sell only halal-certified products.",
+    "shopSection": "Shop",
+    "myAccountSection": "My Account",
+    "legalSection": "Legal",
     "about": "About Us",
     "contact": "Contact",
     "legal": "Legal Notice",
@@ -78,9 +82,13 @@
     "heroSubtitle": "Safe and certified halal products for Muslims living in Japan",
     "shopNow": "Shop Now",
     "featuredProducts": "Featured Products",
+    "popularProducts": "Popular Products",
     "newArrivals": "New Arrivals",
     "popularCategories": "Popular Categories",
-    "prayerTimes": "Prayer Times"
+    "prayerTimes": "Prayer Times",
+    "preparingProducts": "Products are being prepared. Please check back soon.",
+    "halalGuaranteeTitle": "Halal Guarantee",
+    "halalGuaranteeText": "All products in our store are halal-certified foods only."
   },
   "products": {
     "title": "Products",
@@ -147,11 +155,24 @@
     "password": "Password",
     "confirmPassword": "Confirm Password",
     "name": "Full Name",
+    "phone": "Phone Number",
+    "postalCode": "Postal Code",
+    "autoFill": "Auto-fill Address",
+    "prefecture": "Prefecture",
+    "city": "City",
+    "address1": "Street Address",
+    "address2": "Apt, Suite, etc. (optional)",
+    "addressSection": "Delivery Address",
+    "addressOptional": "(Optional - you can add it later)",
     "forgotPassword": "Forgot Password",
     "resetPassword": "Reset Password",
     "loginSuccess": "Logged in successfully",
     "logoutSuccess": "Logged out successfully",
     "registerSuccess": "Registration complete. Please check your email.",
+    "emailSentTitle": "Verification email sent",
+    "emailSentBody": "We sent a verification email to. Click the link in the email to complete registration.",
+    "goToLogin": "Go to Login",
+    "processing": "Processing...",
     "alreadyMember": "Already a member?",
     "notMember": "Not a member yet?"
   },

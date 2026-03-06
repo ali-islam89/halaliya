@@ -1,6 +1,7 @@
 {
   "common": {
     "siteName": "Helal Ev",
+    "siteTagline": "Helal Sertifikalı Ürün Mağazası",
     "siteDescription": "Japonya'da yaşayan Müslümanlar için helal sertifikalı ürünler",
     "halal": "Helal",
     "halalCertified": "Helal Sertifikalı",
@@ -65,6 +66,9 @@
   },
   "footer": {
     "halalStatement": "Mağazamızda yalnızca helal sertifikalı ürünler satılmaktadır.",
+    "shopSection": "Mağaza",
+    "myAccountSection": "Hesabım",
+    "legalSection": "Yasal",
     "about": "Hakkımızda",
     "contact": "İletişim",
     "legal": "Yasal Bilgiler",
@@ -78,9 +82,13 @@
     "heroSubtitle": "Japonya'daki Müslümanlar için güvenilir helal gıda ürünleri",
     "shopNow": "Hemen Alışveriş Yap",
     "featuredProducts": "Öne Çıkan Ürünler",
+    "popularProducts": "Popüler Ürünler",
     "newArrivals": "Yeni Gelenler",
     "popularCategories": "Popüler Kategoriler",
-    "prayerTimes": "Namaz Vakitleri"
+    "prayerTimes": "Namaz Vakitleri",
+    "preparingProducts": "Ürünler hazırlanıyor. Lütfen bekleyiniz.",
+    "halalGuaranteeTitle": "Helal Güvencesi",
+    "halalGuaranteeText": "Mağazamızdaki tüm ürünler helal sertifikalıdır."
   },
   "products": {
     "title": "Ürünler",
@@ -147,11 +155,24 @@
     "password": "Şifre",
     "confirmPassword": "Şifre (Tekrar)",
     "name": "Ad Soyad",
+    "phone": "Telefon",
+    "postalCode": "Posta Kodu",
+    "autoFill": "Adresi Otomatik Doldur",
+    "prefecture": "İl",
+    "city": "İlçe",
+    "address1": "Adres",
+    "address2": "Daire No (İsteğe bağlı)",
+    "addressSection": "Teslimat Adresi",
+    "addressOptional": "(İsteğe bağlı - sonra da ekleyebilirsiniz)",
     "forgotPassword": "Şifremi Unuttum",
     "resetPassword": "Şifre Sıfırla",
     "loginSuccess": "Giriş yapıldı",
     "logoutSuccess": "Çıkış yapıldı",
     "registerSuccess": "Kayıt tamamlandı. Lütfen e-postanızı kontrol edin.",
+    "emailSentTitle": "Doğrulama e-postası gönderildi",
+    "emailSentBody": "adresine doğrulama e-postası gönderdik. Kaydı tamamlamak için e-postadaki bağlantıya tıklayın.",
+    "goToLogin": "Giriş sayfasına git",
+    "processing": "İşleniyor...",
     "alreadyMember": "Zaten üye misiniz?",
     "notMember": "Henüz üye değil misiniz?"
   },

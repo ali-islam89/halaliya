@@ -8,6 +8,8 @@ interface FooterProps {
 export default function Footer({ locale }: FooterProps) {
   const t = useTranslations("footer");
   const tn = useTranslations("nav");
+  const tm = useTranslations("mypage");
+  const tc = useTranslations("common");
 
   return (
     <footer className="bg-[#1B6B2E] text-white mt-16">
@@ -38,7 +40,7 @@ export default function Footer({ locale }: FooterProps) {
 
           {/* Links */}
           <div>
-            <h3 className="font-semibold mb-3 text-[#C8961E]">ショップ</h3>
+            <h3 className="font-semibold mb-3 text-[#C8961E]">{t("shopSection")}</h3>
             <ul className="space-y-2 text-sm text-white/80">
               <li><Link href={`/${locale}/products`} className="hover:text-white">{tn("products")}</Link></li>
               <li><Link href={`/${locale}/about`} className="hover:text-white">{t("about")}</Link></li>
@@ -47,16 +49,16 @@ export default function Footer({ locale }: FooterProps) {
           </div>
 
           <div>
-            <h3 className="font-semibold mb-3 text-[#C8961E]">マイアカウント</h3>
+            <h3 className="font-semibold mb-3 text-[#C8961E]">{t("myAccountSection")}</h3>
             <ul className="space-y-2 text-sm text-white/80">
-              <li><Link href={`/${locale}/mypage/orders`} className="hover:text-white">購入履歴</Link></li>
-              <li><Link href={`/${locale}/mypage/wishlist`} className="hover:text-white">お気に入り</Link></li>
+              <li><Link href={`/${locale}/mypage/orders`} className="hover:text-white">{tm("orders")}</Link></li>
+              <li><Link href={`/${locale}/mypage/wishlist`} className="hover:text-white">{tc("wishlist")}</Link></li>
               <li><Link href={`/${locale}/auth/login`} className="hover:text-white">{tn("login")}</Link></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="font-semibold mb-3 text-[#C8961E]">法的情報</h3>
+            <h3 className="font-semibold mb-3 text-[#C8961E]">{t("legalSection")}</h3>
             <ul className="space-y-2 text-sm text-white/80">
               <li><Link href={`/${locale}/legal`} className="hover:text-white">{t("legal")}</Link></li>
               <li><Link href={`/${locale}/legal#privacy`} className="hover:text-white">{t("privacy")}</Link></li>

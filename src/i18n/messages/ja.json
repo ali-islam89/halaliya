@@ -1,6 +1,7 @@
 {
   "common": {
     "siteName": "ハラール屋",
+    "siteTagline": "ハラール認証済み商品専門店",
     "siteDescription": "日本在住ムスリム向けハラール認証済み食品・日用品専門店",
     "halal": "ハラール",
     "halalCertified": "ハラール認証済み",
@@ -65,6 +66,9 @@
   },
   "footer": {
     "halalStatement": "当店はハラール認証済み商品のみ取り扱っています。",
+    "shopSection": "ショップ",
+    "myAccountSection": "マイアカウント",
+    "legalSection": "法的情報",
     "about": "ハラール屋について",
     "contact": "お問い合わせ",
     "legal": "特定商取引法に基づく表記",
@@ -78,9 +82,13 @@
     "heroSubtitle": "日本在住ムスリムの皆様へ、安心・安全なハラール食品をお届けします",
     "shopNow": "今すぐ購入",
     "featuredProducts": "おすすめ商品",
+    "popularProducts": "人気商品",
     "newArrivals": "新着商品",
     "popularCategories": "人気カテゴリ",
-    "prayerTimes": "礼拝時間"
+    "prayerTimes": "礼拝時間",
+    "preparingProducts": "商品を準備中です。もうしばらくお待ちください。",
+    "halalGuaranteeTitle": "ハラール認証保証",
+    "halalGuaranteeText": "当店の全商品はハラール認証を取得した食品のみを取り扱っています。"
   },
   "products": {
     "title": "商品一覧",
@@ -147,11 +155,24 @@
     "password": "パスワード",
     "confirmPassword": "パスワード（確認）",
     "name": "お名前",
+    "phone": "電話番号",
+    "postalCode": "郵便番号",
+    "autoFill": "住所を自動入力",
+    "prefecture": "都道府県",
+    "city": "市区町村",
+    "address1": "番地・建物名",
+    "address2": "部屋番号など（任意）",
+    "addressSection": "配送先住所",
+    "addressOptional": "（省略可・後で追加できます）",
     "forgotPassword": "パスワードを忘れた方",
     "resetPassword": "パスワードリセット",
     "loginSuccess": "ログインしました",
     "logoutSuccess": "ログアウトしました",
     "registerSuccess": "会員登録が完了しました。確認メールをご確認ください。",
+    "emailSentTitle": "確認メールを送信しました",
+    "emailSentBody": "に確認メールをお送りしました。メール内のリンクをクリックして登録を完了してください。",
+    "goToLogin": "ログインページへ",
+    "processing": "処理中...",
     "alreadyMember": "すでに会員の方",
     "notMember": "会員登録がまだの方"
   },

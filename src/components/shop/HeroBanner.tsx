@@ -30,8 +30,8 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
     return (
       <div className="relative w-full h-64 md:h-96 bg-gradient-to-r from-[#1B6B2E] to-[#2a8a3d] flex items-center">
         <div className="max-w-7xl mx-auto px-4 w-full">
-          <div className="max-w-xl">
-            <h1 className="text-white text-3xl md:text-5xl font-bold mb-3 leading-tight">
+          <div className="max-w-2xl">
+            <h1 className="text-white text-3xl md:text-4xl font-bold mb-3 leading-tight text-balance">
               {t("heroTitle")}
             </h1>
             <p className="text-white/80 text-base md:text-lg mb-6">
