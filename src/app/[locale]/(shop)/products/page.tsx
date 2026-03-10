@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { prisma } from "@/lib/prisma";
+import { createServiceClient } from "@/lib/supabase/server";
 import ProductGrid from "@/components/shop/ProductGrid";
 import PrayerTimesWidget from "@/components/shop/PrayerTimesWidget";
 import Link from "next/link";
@@ -41,39 +41,39 @@ export default async function ProductsPage({
   let total = 0;
 
   try {
-    categories = await prisma.category.findMany({
-      where: { parentId: null },
-      orderBy: { order: "asc" },
-    });
+    const supabase = createServiceClient();
 
-    const where: any = { isActive: true };
+    const { data: catData } = await supabase
+      .from("categories")
+      .select("*")
+      .is("parentId", null)
+      .order("order");
+    categories = catData || [];
+
+    let query = supabase
+      .from("products")
+      .select("*, product_images(id,url,order), categories!categoryId(id,nameJa,nameTr,nameEn,slug,order)", { count: "exact" })
+      .eq("isActive", true);
+
     if (sp.q) {
-      where.OR = [
-        { nameJa: { contains: sp.q, mode: "insensitive" } },
-        { nameTr: { contains: sp.q, mode: "insensitive" } },
-        { nameEn: { contains: sp.q, mode: "insensitive" } },
-        { descJa: { contains: sp.q, mode: "insensitive" } },
-      ];
+      query = query.or(`nameJa.ilike.%${sp.q}%,nameTr.ilike.%${sp.q}%,nameEn.ilike.%${sp.q}%,descJa.ilike.%${sp.q}%`);
     }
     if (sp.category) {
-      const cat = categories.find((c) => c.slug === sp.category);
-      if (cat) where.categoryId = cat.id;
+      const cat = categories.find((c: any) => c.slug === sp.category);
+      if (cat) query = query.eq("categoryId", cat.id);
     }
 
-    let orderBy: any = { createdAt: "desc" };
-    if (sp.sort === "price") orderBy = { price: "asc" };
-    if (sp.sort === "price_desc") orderBy = { price: "desc" };
+    if (sp.sort === "price") query = query.order("price", { ascending: true });
+    else if (sp.sort === "price_desc") query = query.order("price", { ascending: false });
+    else query = query.order("createdAt", { ascending: false });
 
-    [products, total] = await Promise.all([
-      prisma.product.findMany({
-        where,
-        include: { images: { orderBy: { order: "asc" }, take: 1 }, category: true },
-        orderBy,
-        skip,
-        take: PAGE_SIZE,
-      }),
-      prisma.product.count({ where }),
-    ]);
+    const { data: rawProducts, count } = await query.range(skip, skip + PAGE_SIZE - 1);
+    total = count || 0;
+    products = (rawProducts || []).map((p: any) => ({
+      ...p,
+      images: (p.product_images || []).sort((a: any, b: any) => a.order - b.order),
+      category: p.categories || null,
+    }));
   } catch {}
 
   const totalPages = Math.ceil(total / PAGE_SIZE);

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { createServiceClient } from "@/lib/supabase/server";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -11,40 +11,35 @@ export async function GET(request: NextRequest) {
   const skip = (page - 1) * take;
 
   try {
-    const where: any = { isActive: true };
+    const supabase = createServiceClient();
+
+    let query = supabase
+      .from("products")
+      .select("*, product_images(id,url,order), categories!categoryId(id,nameJa,nameTr,nameEn,slug,order)", { count: "exact" })
+      .eq("isActive", true);
 
     if (q) {
-      where.OR = [
-        { nameJa: { contains: q, mode: "insensitive" } },
-        { nameTr: { contains: q, mode: "insensitive" } },
-        { nameEn: { contains: q, mode: "insensitive" } },
-      ];
+      query = query.or(`nameJa.ilike.%${q}%,nameTr.ilike.%${q}%,nameEn.ilike.%${q}%`);
     }
 
     if (categorySlug) {
-      const category = await prisma.category.findUnique({ where: { slug: categorySlug } });
-      if (category) where.categoryId = category.id;
+      const { data: cat } = await supabase.from("categories").select("id").eq("slug", categorySlug).single();
+      if (cat) query = query.eq("categoryId", cat.id);
     }
 
-    let orderBy: any = { createdAt: "desc" };
-    if (sort === "price") orderBy = { price: "asc" };
-    if (sort === "price_desc") orderBy = { price: "desc" };
+    if (sort === "price") query = query.order("price", { ascending: true });
+    else if (sort === "price_desc") query = query.order("price", { ascending: false });
+    else query = query.order("createdAt", { ascending: false });
 
-    const [products, total] = await Promise.all([
-      prisma.product.findMany({
-        where,
-        include: {
-          images: { orderBy: { order: "asc" }, take: 1 },
-          category: { select: { nameJa: true, slug: true } },
-        },
-        orderBy,
-        skip,
-        take,
-      }),
-      prisma.product.count({ where }),
-    ]);
+    const { data: rawProducts, count } = await query.range(skip, skip + take - 1);
 
-    return NextResponse.json({ products, total, page, take });
+    const products = (rawProducts || []).map((p: any) => ({
+      ...p,
+      images: (p.product_images || []).sort((a: any, b: any) => a.order - b.order),
+      category: p.categories || null,
+    }));
+
+    return NextResponse.json({ products, total: count || 0, page, take });
   } catch (error) {
     return NextResponse.json({ error: "Internal error" }, { status: 500 });
   }

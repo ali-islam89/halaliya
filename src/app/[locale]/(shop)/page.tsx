@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { prisma } from "@/lib/prisma";
+import { createServiceClient } from "@/lib/supabase/server";
 import HeroBanner from "@/components/shop/HeroBanner";
 import ProductGrid from "@/components/shop/ProductGrid";
 import ProductCarousel from "@/components/shop/ProductCarousel";
@@ -32,29 +32,37 @@ export default async function HomePage({
   let categories: any[] = [];
 
   try {
-    [banners, featuredProducts, newArrivals, categories] = await Promise.all([
-      prisma.banner.findMany({
-        where: { isActive: true },
-        orderBy: { order: "asc" },
-      }),
-      prisma.product.findMany({
-        where: { isActive: true, stock: { gt: 0 } },
-        include: { images: { orderBy: { order: "asc" }, take: 1 }, category: true },
-        orderBy: { createdAt: "desc" },
-        take: 8,
-      }),
-      prisma.product.findMany({
-        where: { isActive: true },
-        include: { images: { orderBy: { order: "asc" }, take: 1 }, category: true },
-        orderBy: { createdAt: "desc" },
-        take: 8,
-      }),
-      prisma.category.findMany({
-        where: { parentId: null },
-        orderBy: { order: "asc" },
-        take: 8,
-      }),
+    const supabase = createServiceClient();
+
+    const mapProducts = (rows: any[]) =>
+      (rows || []).map((p: any) => ({
+        ...p,
+        images: (p.product_images || []).sort((a: any, b: any) => a.order - b.order),
+        category: p.categories || null,
+      }));
+
+    const [bannersRes, featuredRes, newArrivalsRes, categoriesRes] = await Promise.all([
+      supabase.from("banners").select("*").eq("isActive", true).order("order"),
+      supabase
+        .from("products")
+        .select("*, product_images(id,url,order), categories!categoryId(id,nameJa,nameTr,nameEn,slug,order)")
+        .eq("isActive", true)
+        .gt("stock", 0)
+        .order("createdAt", { ascending: false })
+        .limit(8),
+      supabase
+        .from("products")
+        .select("*, product_images(id,url,order), categories!categoryId(id,nameJa,nameTr,nameEn,slug,order)")
+        .eq("isActive", true)
+        .order("createdAt", { ascending: false })
+        .limit(8),
+      supabase.from("categories").select("*").is("parentId", null).order("order").limit(8),
     ]);
+
+    banners = bannersRes.data || [];
+    featuredProducts = mapProducts(featuredRes.data || []);
+    newArrivals = mapProducts(newArrivalsRes.data || []);
+    categories = categoriesRes.data || [];
   } catch {}
 
   return (

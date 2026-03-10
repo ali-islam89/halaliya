@@ -1,14 +1,13 @@
 import { NextResponse } from "next/server";
-import { prisma } from "@/lib/prisma";
+import { createServiceClient } from "@/lib/supabase/server";
 
 export async function GET() {
-  const dbUrl = process.env.DATABASE_URL || "NOT SET";
-  const maskedUrl = dbUrl.replace(/:([^:@]+)@/, ":***@");
-
   try {
-    const [productCount, categoryCount] = await Promise.all([
-      prisma.product.count(),
-      prisma.category.count(),
+    const supabase = createServiceClient();
+
+    const [{ count: productCount }, { count: categoryCount }] = await Promise.all([
+      supabase.from("products").select("*", { count: "exact", head: true }),
+      supabase.from("categories").select("*", { count: "exact", head: true }),
     ]);
 
     return NextResponse.json({
@@ -16,14 +15,12 @@ export async function GET() {
       db: "connected",
       products: productCount,
       categories: categoryCount,
-      dbUrl: maskedUrl,
     });
   } catch (error: any) {
     return NextResponse.json({
       status: "error",
       db: "failed",
       error: error?.message || String(error),
-      dbUrl: maskedUrl,
     }, { status: 500 });
   }
 }
