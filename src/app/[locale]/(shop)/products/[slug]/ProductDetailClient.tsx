@@ -84,9 +84,9 @@ export default function ProductDetailClient({ product, related, locale }: Props)
         {/* Images */}
         <div>
           <div className="relative aspect-square rounded-xl overflow-hidden bg-gray-50 mb-3">
-            {product.images.length > 0 ? (
+            {product.images.length > 0 && product.images[activeImg]?.url ? (
               <Image
-                src={product.images[activeImg]?.url}
+                src={product.images[activeImg].url}
                 alt={name}
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
