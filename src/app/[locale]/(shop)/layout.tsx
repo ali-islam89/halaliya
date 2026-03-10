@@ -1,4 +1,4 @@
-import { prisma } from "@/lib/prisma";
+import { createServiceClient } from "@/lib/supabase/server";
 import Header from "@/components/shop/Header";
 import Footer from "@/components/shop/Footer";
 import type { Locale } from "@/types";
@@ -12,15 +12,16 @@ export default async function ShopLayout({
 }) {
   const { locale } = await params;
 
-  // カテゴリをDBから取得（エラー時は空配列）
   let categories: { id: string; nameJa: string; slug: string }[] = [];
   try {
-    categories = await prisma.category.findMany({
-      where: { parentId: null, products: { some: { isActive: true } } },
-      select: { id: true, nameJa: true, slug: true },
-      orderBy: { order: "asc" },
-      take: 12,
-    });
+    const supabase = createServiceClient();
+    const { data } = await supabase
+      .from("categories")
+      .select("id,nameJa,slug")
+      .is("parentId", null)
+      .order("order")
+      .limit(12);
+    categories = data || [];
   } catch {}
 
   return (
