@@ -62,6 +62,47 @@ export default async function HomePage({
       {/* ヒーローバナー */}
       <HeroBanner banners={banners} locale={locale as Locale} />
 
+      {/* ━━ 文化の架け橋バナー ━━ */}
+      <div
+        className="border-b"
+        style={{ background: "linear-gradient(135deg, #1A3A5C 0%, #1B6B2E 100%)", borderColor: "#C8961E" }}
+      >
+        <div className="max-w-7xl mx-auto px-4 py-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div className="flex items-center gap-4">
+            <span className="text-4xl">🇹🇷</span>
+            <div className="text-white/40 text-2xl font-light">×</div>
+            <span className="text-4xl">🇯🇵</span>
+          </div>
+          <div className="text-center sm:text-left">
+            <p
+              className="text-white font-bold text-lg leading-tight"
+              style={{ fontFamily: "'Shippori Mincho', serif" }}
+            >
+              {tc("bridgeTitle") || "トルコと日本をつなぐハラール食品"}
+            </p>
+            <p className="text-white/65 text-sm mt-1">
+              {tc("bridgeSubtitle") || "Türk ve Japon kültürünü birleştiren helal ürünler"}
+            </p>
+          </div>
+          <div className="flex items-center gap-3">
+            <div
+              className="text-center px-4 py-2 rounded-lg"
+              style={{ background: "rgba(200,150,30,0.15)", border: "1px solid rgba(200,150,30,0.4)" }}
+            >
+              <div className="text-[#C8961E] font-bold text-xl">100+</div>
+              <div className="text-white/60 text-xs">SKU</div>
+            </div>
+            <div
+              className="text-center px-4 py-2 rounded-lg"
+              style={{ background: "rgba(200,150,30,0.15)", border: "1px solid rgba(200,150,30,0.4)" }}
+            >
+              <div className="text-[#C8961E] font-bold text-xl">HALAL</div>
+              <div className="text-white/60 text-xs">認証済み</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 py-8">
         <div className="flex gap-8">
           {/* メインコンテンツ */}
@@ -70,8 +111,15 @@ export default async function HomePage({
             {categories.length > 0 && (
               <section className="mb-10">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold text-gray-900">{t("popularCategories")}</h2>
-                  <Link href={`/${locale}/products`} className="text-sm text-[#1B6B2E] hover:underline">
+                  <h2
+                    className="text-xl font-bold"
+                    style={{ fontFamily: "'Shippori Mincho', serif", color: "#1A3A5C" }}
+                  >
+                    {t("popularCategories")}
+                  </h2>
+                  <Link href={`/${locale}/products`}
+                    className="text-sm hover:underline transition-colors"
+                    style={{ color: "#C8961E" }}>
                     {tc("viewAll")}
                   </Link>
                 </div>
@@ -80,12 +128,29 @@ export default async function HomePage({
                     <Link
                       key={cat.id}
                       href={`/${locale}/products?category=${cat.slug}`}
-                      className="flex flex-col items-center gap-1.5 p-2 rounded-lg hover:bg-[#1B6B2E]/5 transition-colors"
+                      className="group flex flex-col items-center gap-1.5 p-2 rounded-lg transition-all"
+                      style={{ border: "1px solid transparent" }}
+                      onMouseEnter={e => {
+                        const el = e.currentTarget as HTMLElement;
+                        el.style.borderColor = "#C8961E";
+                        el.style.background = "rgba(200,150,30,0.06)";
+                      }}
+                      onMouseLeave={e => {
+                        const el = e.currentTarget as HTMLElement;
+                        el.style.borderColor = "transparent";
+                        el.style.background = "transparent";
+                      }}
                     >
-                      <div className="w-12 h-12 rounded-full bg-[#1B6B2E]/10 flex items-center justify-center text-xl">
+                      <div
+                        className="w-12 h-12 rounded-full flex items-center justify-center text-xl transition-colors"
+                        style={{ background: "rgba(27,107,46,0.1)" }}
+                      >
                         🛒
                       </div>
-                      <span className="text-xs text-center text-gray-700 leading-tight">
+                      <span
+                        className="text-xs text-center leading-tight"
+                        style={{ color: "#1A3A5C", fontFamily: "'Noto Sans JP', sans-serif" }}
+                      >
                         {locale === "tr" ? cat.nameTr || cat.nameJa :
                          locale === "en" ? cat.nameEn || cat.nameJa : cat.nameJa}
                       </span>
@@ -98,8 +163,10 @@ export default async function HomePage({
             {/* おすすめ商品カルーセル */}
             <section className="mb-10">
               <div className="flex items-center justify-between mb-4">
-                <h2 className="text-xl font-bold text-gray-900">{t("featuredProducts")}</h2>
-                <Link href={`/${locale}/products`} className="text-sm text-[#1B6B2E] hover:underline">
+                <h2 className="text-xl font-bold" style={{ fontFamily: "'Shippori Mincho', serif", color: "#1A3A5C" }}>
+                  {t("featuredProducts")}
+                </h2>
+                <Link href={`/${locale}/products`} className="text-sm hover:underline" style={{ color: "#C8961E" }}>
                   {tc("viewAll")}
                 </Link>
               </div>
@@ -122,8 +189,10 @@ export default async function HomePage({
             {newArrivals.length > 0 && (
               <section className="mb-10">
                 <div className="flex items-center justify-between mb-4">
-                  <h2 className="text-xl font-bold text-gray-900">{t("newArrivals")}</h2>
-                  <Link href={`/${locale}/products?sort=new`} className="text-sm text-[#1B6B2E] hover:underline">
+                  <h2 className="text-xl font-bold" style={{ fontFamily: "'Shippori Mincho', serif", color: "#1A3A5C" }}>
+                    {t("newArrivals")}
+                  </h2>
+                  <Link href={`/${locale}/products?sort=new`} className="text-sm hover:underline" style={{ color: "#C8961E" }}>
                     {tc("viewAll")}
                   </Link>
                 </div>
@@ -145,12 +214,28 @@ export default async function HomePage({
               <PrayerTimesWidget />
 
               {/* ハラール認証バナー */}
-              <div className="bg-[#C8961E]/10 border border-[#C8961E]/30 rounded-xl p-4">
-                <div className="text-[#C8961E] text-2xl mb-2">🌙</div>
-                <h3 className="font-semibold text-sm text-gray-900 mb-1">{t("halalGuaranteeTitle")}</h3>
-                <p className="text-xs text-gray-600">
+              <div
+                className="rounded-xl p-4"
+                style={{
+                  background: "linear-gradient(135deg, #1A3A5C, #1B6B2E)",
+                  border: "1px solid rgba(200,150,30,0.4)",
+                }}
+              >
+                <div className="text-2xl mb-2">🌙</div>
+                <h3
+                  className="font-semibold text-sm text-white mb-1"
+                  style={{ fontFamily: "'Shippori Mincho', serif" }}
+                >
+                  {t("halalGuaranteeTitle")}
+                </h3>
+                <p className="text-xs" style={{ color: "rgba(255,255,255,0.7)" }}>
                   {t("halalGuaranteeText")}
                 </p>
+                <div className="mt-3 flex items-center gap-2">
+                  <span className="text-lg">🇹🇷</span>
+                  <span style={{ color: "rgba(200,150,30,0.6)", fontSize: "10px" }}>×</span>
+                  <span className="text-lg">🇯🇵</span>
+                </div>
               </div>
             </div>
           </aside>

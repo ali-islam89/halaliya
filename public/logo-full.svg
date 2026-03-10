@@ -1,0 +1,88 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <defs>
+    <radialGradient id="outerGrad2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#1B6B2E"/>
+      <stop offset="100%" stop-color="#134d21"/>
+    </radialGradient>
+    <linearGradient id="goldGrad2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#E8B84B"/>
+      <stop offset="50%"  stop-color="#C8961E"/>
+      <stop offset="100%" stop-color="#A07010"/>
+    </linearGradient>
+    <!-- ブランド名のグリーングラデーション -->
+    <linearGradient id="greenText" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#2a8a3d"/>
+      <stop offset="100%" stop-color="#1B6B2E"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ━━━ シンボルマーク (左側) ━━━ -->
+  <g transform="translate(4,4) scale(0.9)">
+    <!-- ゴールドリング -->
+    <circle cx="40" cy="40" r="38" fill="url(#goldGrad2)"/>
+    <!-- メイン円（グリーン） -->
+    <circle cx="40" cy="40" r="34.5" fill="url(#outerGrad2)"/>
+    <!-- 赤リング（日の丸） -->
+    <circle cx="40" cy="40" r="34.5" fill="none" stroke="#C8102E" stroke-width="3"/>
+
+    <!-- 三日月（トルコ） -->
+    <g transform="translate(40,40)">
+      <path d="
+        M -1.5,-17.5
+        A 17.5,17.5 0 1,1 -1.5,17.5
+        A 12.5,12.5 0 1,0 -1.5,-17.5
+        Z
+      " fill="white" transform="rotate(-20)"/>
+      <!-- 星 -->
+      <g transform="translate(11,0) rotate(-20)">
+        <polygon
+          points="0,-5.5 1.3,-1.7 5.2,-1.7 2.1,0.7 3.4,4.4 0,2 -3.4,4.4 -2.1,0.7 -5.2,-1.7 -1.3,-1.7"
+          fill="white"
+        />
+      </g>
+    </g>
+
+    <!-- 桜（右下） -->
+    <g transform="translate(58,58) scale(0.45)" opacity="0.9">
+      <ellipse cx="0" cy="-8" rx="4" ry="6" fill="#F5C0CC" transform="rotate(0)"/>
+      <ellipse cx="0" cy="-8" rx="4" ry="6" fill="#F5C0CC" transform="rotate(72)"/>
+      <ellipse cx="0" cy="-8" rx="4" ry="6" fill="#F5C0CC" transform="rotate(144)"/>
+      <ellipse cx="0" cy="-8" rx="4" ry="6" fill="#F5C0CC" transform="rotate(216)"/>
+      <ellipse cx="0" cy="-8" rx="4" ry="6" fill="#F5C0CC" transform="rotate(288)"/>
+      <circle cx="0" cy="0" r="3" fill="#C8961E"/>
+    </g>
+  </g>
+
+  <!-- ━━━ ブランドテキスト (右側) ━━━ -->
+  <!-- Halaliya (英語 - アクセントフォント風) -->
+  <text
+    x="92" y="32"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="26"
+    font-weight="bold"
+    letter-spacing="2"
+    fill="url(#greenText)"
+  >Halaliya</text>
+
+  <!-- ゴールドの下線 -->
+  <line x1="92" y1="36" x2="310" y2="36" stroke="#C8961E" stroke-width="1.2" opacity="0.7"/>
+
+  <!-- ハラール屋（日本語） -->
+  <text
+    x="94" y="56"
+    font-family="'Hiragino Mincho ProN', 'Yu Mincho', 'MS Mincho', serif"
+    font-size="18"
+    letter-spacing="4"
+    fill="#1A3A5C"
+  >ハラール屋</text>
+
+  <!-- halaliya.com （小さく） -->
+  <text
+    x="94" y="72"
+    font-family="Georgia, serif"
+    font-size="11"
+    letter-spacing="1"
+    fill="#C8961E"
+    opacity="0.9"
+  >halaliya.com</text>
+</svg>

@@ -26,29 +26,78 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
   }, [banners.length]);
 
   if (banners.length === 0) {
-    // デフォルトバナー
+    // ━━ デフォルトバナー: トルコ×日本グラデーション ━━
     return (
-      <div className="relative w-full h-64 md:h-96 bg-gradient-to-r from-[#1B6B2E] to-[#2a8a3d] flex items-center">
-        <div className="max-w-7xl mx-auto px-4 w-full">
+      <div
+        className="relative w-full h-64 md:h-96 flex items-center overflow-hidden"
+        style={{
+          background: "linear-gradient(135deg, #1A3A5C 0%, #1B6B2E 45%, #8B1A2B 100%)",
+        }}
+      >
+        {/* 青海波パターン（左側・和の装飾） */}
+        <div
+          className="absolute inset-0 seigaiha-pattern opacity-10 pointer-events-none"
+        />
+
+        {/* チューリップ装飾（右側） */}
+        <div
+          className="absolute right-0 top-0 h-full w-2/5 opacity-10 tulip-pattern pointer-events-none"
+        />
+
+        {/* 角装飾（左上） */}
+        <div className="absolute top-0 left-0 w-16 h-16 pointer-events-none">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full opacity-40">
+            <path d="M0 0 L64 0 L0 64 Z" fill="#C8961E" opacity="0.3"/>
+            <path d="M0 0 L32 0 L0 32 Z" fill="#C8961E" opacity="0.5"/>
+          </svg>
+        </div>
+        {/* 角装飾（右下） */}
+        <div className="absolute bottom-0 right-0 w-16 h-16 pointer-events-none">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" className="w-full h-full opacity-40">
+            <path d="M64 64 L0 64 L64 0 Z" fill="#C8961E" opacity="0.3"/>
+            <path d="M64 64 L32 64 L64 32 Z" fill="#C8961E" opacity="0.5"/>
+          </svg>
+        </div>
+
+        {/* メインコンテンツ */}
+        <div className="relative z-10 max-w-7xl mx-auto px-4 w-full">
           <div className="max-w-2xl">
-            <h1 className="text-white text-3xl md:text-4xl font-bold mb-3 leading-tight text-balance">
+            {/* ゴールドの細い上線 */}
+            <div className="w-16 h-0.5 bg-[#C8961E] mb-4 opacity-80" />
+            <h1
+              className="text-white text-3xl md:text-4xl font-bold mb-3 leading-tight"
+              style={{ fontFamily: "'Shippori Mincho', 'Noto Serif JP', serif", textShadow: "0 2px 8px rgba(0,0,0,0.3)" }}
+            >
               {t("heroTitle")}
             </h1>
-            <p className="text-white/80 text-base md:text-lg mb-6">
+            <p className="text-white/85 text-base md:text-lg mb-6 leading-relaxed">
               {t("heroSubtitle")}
             </p>
-            <Link href={`/${locale}/products`}>
-              <Button size="lg" variant="accent">
-                {t("shopNow")}
-              </Button>
-            </Link>
+            <div className="flex items-center gap-3">
+              <Link href={`/${locale}/products`}>
+                <Button
+                  size="lg"
+                  style={{ background: "#C8961E", color: "white", border: "none", fontWeight: 700 }}
+                  className="hover:opacity-90 transition-opacity shadow-lg"
+                >
+                  {t("shopNow")}
+                </Button>
+              </Link>
+              <div className="text-white/60 text-sm flex items-center gap-1">
+                <span>🇹🇷</span><span className="mx-1">×</span><span>🇯🇵</span>
+              </div>
+            </div>
           </div>
         </div>
-        {/* Decorative */}
-        <div className="absolute right-0 top-0 h-full w-1/3 opacity-10">
-          <div className="text-white text-9xl font-bold text-right pr-8 pt-8 select-none">
-            ハラール
-          </div>
+
+        {/* 右側の三日月シルエット装飾 */}
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 opacity-15 pointer-events-none hidden md:block">
+          <svg viewBox="0 0 120 120" width="120" height="120" xmlns="http://www.w3.org/2000/svg">
+            <path d="M30,-40 A50,50 0 1,1 30,40 A36,36 0 1,0 30,-40 Z"
+              fill="white" transform="translate(60,60) rotate(-20)"/>
+            <polygon points="0,-18 4,-5 17,-5 7,3 11,16 0,8 -11,16 -7,3 -17,-5 -4,-5"
+              fill="white" transform="translate(95,42)"/>
+          </svg>
         </div>
       </div>
     );
@@ -73,7 +122,13 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
       {title && (
         <div className="absolute inset-0 bg-black/30 flex items-end">
           <div className="p-6 text-white">
-            <h2 className="text-2xl font-bold">{title}</h2>
+            <div className="w-12 h-0.5 bg-[#C8961E] mb-2" />
+            <h2
+              className="text-2xl font-bold"
+              style={{ fontFamily: "'Shippori Mincho', serif" }}
+            >
+              {title}
+            </h2>
           </div>
         </div>
       )}
@@ -81,13 +136,13 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
         <>
           <button
             onClick={() => setCurrent((p) => (p - 1 + banners.length) % banners.length)}
-            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 rounded-full p-1 hover:bg-white"
+            className="absolute left-2 top-1/2 -translate-y-1/2 bg-white/70 rounded-full p-1 hover:bg-white transition-colors"
           >
             <ChevronLeft className="h-6 w-6 text-gray-800" />
           </button>
           <button
             onClick={() => setCurrent((p) => (p + 1) % banners.length)}
-            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 rounded-full p-1 hover:bg-white"
+            className="absolute right-2 top-1/2 -translate-y-1/2 bg-white/70 rounded-full p-1 hover:bg-white transition-colors"
           >
             <ChevronRight className="h-6 w-6 text-gray-800" />
           </button>
@@ -96,9 +151,7 @@ export default function HeroBanner({ banners, locale }: HeroBannerProps) {
               <button
                 key={i}
                 onClick={() => setCurrent(i)}
-                className={`w-2 h-2 rounded-full transition-colors ${
-                  i === current ? "bg-white" : "bg-white/50"
-                }`}
+                className={`transition-all ${i === current ? "w-4 h-2 rounded-full bg-[#C8961E]" : "w-2 h-2 rounded-full bg-white/60"}`}
               />
             ))}
           </div>

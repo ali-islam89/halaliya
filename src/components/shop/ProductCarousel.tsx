@@ -90,14 +90,18 @@ export default function ProductCarousel({ products, locale, title }: ProductCaro
               <Link
                 key={product.id}
                 href={`/${locale}/products/${product.slug}`}
-                className="flex-none group block rounded-2xl border border-gray-200 bg-white overflow-hidden cursor-pointer"
+                className="flex-none group block bg-white overflow-hidden cursor-pointer"
                 style={{
                   width: `calc((100% - ${(VISIBLE - 1) * 1}rem) / ${VISIBLE})`,
+                  borderRadius: "8px",
+                  border: isHovered ? "1px solid #C8961E" : "1px solid #E5DCC8",
+                  borderLeftWidth: isHovered ? "3px" : "1px",
+                  borderLeftColor: isHovered ? "#C8102E" : "#E5DCC8",
                   boxShadow: isHovered
-                    ? "0 20px 40px rgba(27,107,46,0.18)"
-                    : "0 2px 8px rgba(0,0,0,0.06)",
-                  transform: isHovered ? "translateY(-8px) scale(1.03)" : "translateY(0) scale(1)",
-                  transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                    ? "0 8px 24px rgba(26,58,92,0.15)"
+                    : "0 1px 4px rgba(0,0,0,0.06)",
+                  transform: isHovered ? "translateY(-6px)" : "translateY(0)",
+                  transition: "all 0.25s ease",
                 }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
@@ -128,8 +132,11 @@ export default function ProductCarousel({ products, locale, title }: ProductCaro
                   )}
                   {/* ホバー時のオーバーレイ */}
                   <div
-                    className="absolute inset-0 bg-gradient-to-t from-[#1B6B2E]/60 to-transparent flex items-end justify-center pb-3 transition-opacity duration-300"
-                    style={{ opacity: isHovered ? 1 : 0 }}
+                    className="absolute inset-0 flex items-end justify-center pb-3 transition-opacity duration-300"
+                    style={{
+                      opacity: isHovered ? 1 : 0,
+                      background: "linear-gradient(to top, rgba(26,58,92,0.7), transparent)",
+                    }}
                   >
                     <Button
                       size="sm"
@@ -157,12 +164,18 @@ export default function ProductCarousel({ products, locale, title }: ProductCaro
 
                 {/* コンテンツ */}
                 <div className="p-3">
-                  <p className="text-xs text-gray-400 mb-0.5">{product.category?.nameJa || ""}</p>
-                  <h3 className="font-medium text-sm text-gray-900 line-clamp-2 mb-2 min-h-[2.5rem]">
+                  <p className="text-[10px] font-medium tracking-wider mb-0.5" style={{ color: "#C8961E" }}>
+                    {product.category?.nameJa || ""}
+                  </p>
+                  <h3
+                    className="text-sm line-clamp-2 mb-1.5 min-h-[2.5rem] leading-snug"
+                    style={{ fontFamily: "'Shippori Mincho', serif", color: "#1A3A5C", fontWeight: 600 }}
+                  >
                     {name}
                   </h3>
-                  <p className="text-[#1B6B2E] font-bold text-base">{formatPrice(priceIncl)}</p>
-                  <p className="text-xs text-gray-400">{t("tax")}</p>
+                  <div className="w-full h-px mb-1.5" style={{ background: "linear-gradient(90deg, #C8961E, transparent)" }} />
+                  <p className="font-bold text-base" style={{ color: "#1A3A5C" }}>{formatPrice(priceIncl)}</p>
+                  <p className="text-xs" style={{ color: "#9CA3AF" }}>{t("tax")}</p>
                 </div>
               </Link>
             );
@@ -175,14 +188,20 @@ export default function ProductCarousel({ products, locale, title }: ProductCaro
         <>
           <button
             onClick={goPrev}
-            className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#1B6B2E] hover:text-white transition-all duration-200 border border-gray-200"
+            className="absolute -left-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200"
+            style={{ border: "1px solid #C8961E", color: "#1A3A5C" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#1A3A5C"; (e.currentTarget as HTMLElement).style.color = "white"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "white"; (e.currentTarget as HTMLElement).style.color = "#1A3A5C"; }}
             aria-label="前へ"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
           <button
             onClick={goNext}
-            className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#1B6B2E] hover:text-white transition-all duration-200 border border-gray-200"
+            className="absolute -right-4 top-1/2 -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center transition-all duration-200"
+            style={{ border: "1px solid #C8961E", color: "#1A3A5C" }}
+            onMouseEnter={e => { (e.currentTarget as HTMLElement).style.background = "#1A3A5C"; (e.currentTarget as HTMLElement).style.color = "white"; }}
+            onMouseLeave={e => { (e.currentTarget as HTMLElement).style.background = "white"; (e.currentTarget as HTMLElement).style.color = "#1A3A5C"; }}
             aria-label="次へ"
           >
             <ChevronRight className="h-5 w-5" />
@@ -201,7 +220,7 @@ export default function ProductCarousel({ products, locale, title }: ProductCaro
               style={{
                 width: i === current ? "24px" : "8px",
                 height: "8px",
-                background: i === current ? "#1B6B2E" : "#d1d5db",
+                background: i === current ? "#C8961E" : "#D4C9A8",
               }}
               aria-label={`${i + 1}番目へ`}
             />

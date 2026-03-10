@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <defs>
+    <!-- 外周グラデーション: 日本の朱 → トルコのグリーン -->
+    <radialGradient id="outerGrad" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"   stop-color="#1B6B2E"/>
+      <stop offset="100%" stop-color="#134d21"/>
+    </radialGradient>
+    <!-- ゴールドリング用 -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#E8B84B"/>
+      <stop offset="50%"  stop-color="#C8961E"/>
+      <stop offset="100%" stop-color="#A07010"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 外周ゴールドリング（日の丸をイメージした縁取り） -->
+  <circle cx="50" cy="50" r="48" fill="url(#goldGrad)"/>
+
+  <!-- メイン円（グリーン） -->
+  <circle cx="50" cy="50" r="44" fill="url(#outerGrad)"/>
+
+  <!-- 日本国旗の赤丸をイメージした細い赤リング -->
+  <circle cx="50" cy="50" r="44" fill="none" stroke="#C8102E" stroke-width="3.5"/>
+
+  <!-- 三日月（トルコ国旗） - 白 -->
+  <!-- 大きな白円から小さな白円を引いて三日月を作る -->
+  <g transform="translate(50,50)">
+    <!-- 三日月本体 -->
+    <path d="
+      M -2,-22
+      A 22,22 0 1,1 -2,22
+      A 16,16 0 1,0 -2,-22
+      Z
+    " fill="white" transform="rotate(-20)"/>
+
+    <!-- 星（五芒星）トルコ国旗 -->
+    <g transform="translate(14, 0) rotate(-20)">
+      <polygon
+        points="0,-7 1.6,-2.2 6.7,-2.2 2.7,0.8 4.3,5.6 0,2.6 -4.3,5.6 -2.7,0.8 -6.7,-2.2 -1.6,-2.2"
+        fill="white"
+      />
+    </g>
+  </g>
+
+  <!-- 桜の花びら4枚（右下に小さく: 日本のシンボル） -->
+  <g transform="translate(72,72) scale(0.55)" opacity="0.9">
+    <!-- 花びら -->
+    <ellipse cx="0"  cy="-8" rx="4" ry="6" fill="#F5C0CC" transform="rotate(0)"/>
+    <ellipse cx="0"  cy="-8" rx="4" ry="6" fill="#F5C0CC" transform="rotate(72)"/>
+    <ellipse cx="0"  cy="-8" rx="4" ry="6" fill="#F5C0CC" transform="rotate(144)"/>
+    <ellipse cx="0"  cy="-8" rx="4" ry="6" fill="#F5C0CC" transform="rotate(216)"/>
+    <ellipse cx="0"  cy="-8" rx="4" ry="6" fill="#F5C0CC" transform="rotate(288)"/>
+    <!-- 花芯 -->
+    <circle cx="0" cy="0" r="3" fill="#C8961E"/>
+  </g>
+</svg>
