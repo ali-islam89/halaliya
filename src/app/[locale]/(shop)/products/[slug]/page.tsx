@@ -1,5 +1,5 @@
 import { getTranslations } from "next-intl/server";
-import { prisma } from "@/lib/prisma";
+import { createServiceClient } from "@/lib/supabase/server";
 import { notFound } from "next/navigation";
 import type { Locale } from "@/types";
 import type { Metadata } from "next";
@@ -12,11 +12,15 @@ export async function generateMetadata({
 }) {
   const { locale, slug } = await params;
   try {
-    const product = await prisma.product.findUnique({
-      where: { slug, isActive: true },
-    });
-    if (!product) return { title: "Not Found" };
-    const name = locale === "en" ? product.nameEn || product.nameJa : product.nameJa;
+    const supabase = createServiceClient();
+    const { data } = await supabase
+      .from("products")
+      .select("nameJa,nameEn")
+      .eq("slug", slug)
+      .eq("isActive", true)
+      .single();
+    if (!data) return { title: "Not Found" };
+    const name = locale === "en" ? data.nameEn || data.nameJa : data.nameJa;
     return { title: name } satisfies Metadata;
   } catch {
     return { title: "Product" };
@@ -29,38 +33,39 @@ export default async function ProductDetailPage({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
+  const supabase = createServiceClient();
 
-  let product: any = null;
+  const { data: raw } = await supabase
+    .from("products")
+    .select("*, product_images(id,url,order), categories!categoryId(id,nameJa,nameTr,nameEn,slug,order)")
+    .eq("slug", slug)
+    .eq("isActive", true)
+    .single();
+
+  if (!raw) notFound();
+
+  const product = {
+    ...raw,
+    images: (raw.product_images || []).sort((a: any, b: any) => a.order - b.order),
+    category: raw.categories || null,
+    reviews: [],
+  };
+
   let related: any[] = [];
-
-  try {
-    product = await prisma.product.findUnique({
-      where: { slug, isActive: true },
-      include: {
-        images: { orderBy: { order: "asc" } },
-        category: true,
-        reviews: {
-          where: { isApproved: true },
-          include: { user: { select: { name: true } } },
-          orderBy: { createdAt: "desc" },
-        },
-      },
-    });
-
-    if (product?.categoryId) {
-      related = await prisma.product.findMany({
-        where: {
-          categoryId: product.categoryId,
-          isActive: true,
-          NOT: { id: product.id },
-        },
-        include: { images: { orderBy: { order: "asc" }, take: 1 }, category: true },
-        take: 4,
-      });
-    }
-  } catch {}
-
-  if (!product) notFound();
+  if (raw.categoryId) {
+    const { data: relRaw } = await supabase
+      .from("products")
+      .select("*, product_images(id,url,order), categories!categoryId(id,nameJa,nameTr,nameEn,slug,order)")
+      .eq("categoryId", raw.categoryId)
+      .eq("isActive", true)
+      .neq("id", raw.id)
+      .limit(4);
+    related = (relRaw || []).map((p: any) => ({
+      ...p,
+      images: (p.product_images || []).sort((a: any, b: any) => a.order - b.order),
+      category: p.categories || null,
+    }));
+  }
 
   return <ProductDetailClient product={product} related={related} locale={locale as Locale} />;
 }
