@@ -61,12 +61,13 @@ export default function Header({ locale, categories = [] }: HeaderProps) {
           {/* ロゴ */}
           <Link href={`/${locale}`} className="flex items-center shrink-0 hover:opacity-90 transition-opacity">
             <Image
-              src="/logo-full.svg"
-              alt="ハラール屋 Halaliya"
-              width={200}
-              height={50}
+              src="/logo-halaya.png"
+              alt="Turka Japan Halal Food"
+              width={140}
+              height={140}
               priority
-              className="h-12 w-auto"
+              className="h-16 w-auto"
+              style={{ mixBlendMode: "multiply" }}
             />
           </Link>
 
